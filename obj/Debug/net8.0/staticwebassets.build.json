@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "nTni64wzjEoa3GQ+vLkbH1WV8k/KOqE/NM12JJ59kAQ=",
+  "Source": "reviewAppWebAPI",
+  "BasePath": "_content/reviewAppWebAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
