@@ -12,13 +12,13 @@ namespace reviewAppWebAPI.Controllers
     public class PokemonController : Controller
     {
         private readonly IPokemonRepository _pokemonRepository;
-        private readonly DataContext context;
+        private readonly DataContext _context;
         private readonly IMapper _mapper;
 
         public PokemonController(IPokemonRepository pokemonRepository, DataContext context, IMapper mapper)
         {
             _pokemonRepository = pokemonRepository;
-            this.context = context;
+            _context = context;
             _mapper = mapper;
         }
 
