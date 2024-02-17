@@ -2,6 +2,7 @@
 using reviewAppWebAPI.Data;
 using reviewAppWebAPI.Interfaces;
 using reviewAppWebAPI.Model;
+using System.Diagnostics.Metrics;
 
 namespace reviewAppWebAPI.Repository
 {
@@ -15,6 +16,13 @@ namespace reviewAppWebAPI.Repository
             _context = context;
             _mapper = mapper;
         }
+
+        public bool CreateOwner(Owner owner)
+        {
+            _context.Add(owner);
+            return Save();
+        }
+
         public Owner GetOwner(int ownerId)
         {
             return _context.Owners.Where(o=>o.Id==ownerId).FirstOrDefault();
@@ -38,6 +46,12 @@ namespace reviewAppWebAPI.Repository
         public bool OwnerExists(int id)
         {
             return _context.Owners.Any(o=>o.Id==id);
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }

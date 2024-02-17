@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("reviewAppWebAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+744b214776534587614738357e219f9444d49b17")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3053ed67a238282b828c842cd4edf508d9c5fa70")]
 [assembly: System.Reflection.AssemblyProductAttribute("reviewAppWebAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("reviewAppWebAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

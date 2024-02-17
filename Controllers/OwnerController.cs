@@ -13,11 +13,13 @@ namespace reviewAppWebAPI.Controllers
     public class OwnerController: Controller
     {
         private readonly IOwnerRepository _onwerRepository;
+        private readonly ICountryRepository _countryRepository;
         private readonly IMapper _mapper;
 
-        public OwnerController(IOwnerRepository onwerRepository, IMapper mapper)
+        public OwnerController(IOwnerRepository onwerRepository, ICountryRepository countryRepository, IMapper mapper)
         {
             _onwerRepository = onwerRepository;
+            _countryRepository = countryRepository;
             _mapper = mapper;
         }
 
@@ -58,6 +60,36 @@ namespace reviewAppWebAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             return Ok(owner);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateOwner([FromQuery] int countryId, [FromBody] OwnerDto ownerCreate)
+        {
+            if (ownerCreate == null)
+                return BadRequest(ModelState);
+            var owner = _onwerRepository.GetOwners()
+                .Where(c => c.FirstName.Trim().ToUpper() == ownerCreate.FirstName.ToUpper() &&
+                c.LastName.Trim().ToUpper() == ownerCreate.LastName.ToUpper())
+                .FirstOrDefault();
+
+            if (owner != null)
+            {
+                ModelState.AddModelError("", "Owner already exists");
+                return StatusCode(422, ModelState);
+            }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var ownerMap = _mapper.Map<Owner>(ownerCreate);
+            ownerMap.Country = _countryRepository.GetCountry(countryId);
+            if (!_onwerRepository.CreateOwner(ownerMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created");
         }
     }
 }
