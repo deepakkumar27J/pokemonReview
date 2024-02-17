@@ -4,6 +4,7 @@ using reviewAppWebAPI.Data;
 using reviewAppWebAPI.Dto;
 using reviewAppWebAPI.Interfaces;
 using reviewAppWebAPI.Model;
+using reviewAppWebAPI.Repository;
 
 namespace reviewAppWebAPI.Controllers
 {
@@ -59,6 +60,34 @@ namespace reviewAppWebAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             return Ok(rating);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreatePokemon([FromQuery] int ownerId, [FromQuery] int categoryId, [FromBody] PokemonDto pokemonCreate)
+        {
+            if (pokemonCreate == null)
+                return BadRequest(ModelState);
+            var pokemons = _pokemonRepository.GetPokemons()
+                .Where(c => c.Name.Trim().ToUpper() == pokemonCreate.Name.TrimEnd().ToUpper())
+                .FirstOrDefault();
+
+            if (pokemons != null)
+            {
+                ModelState.AddModelError("", "Pokemon already exists");
+                return StatusCode(422, ModelState);
+            }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var pokemonMap = _mapper.Map<Pokemon>(pokemonCreate);
+            if (!_pokemonRepository.CreatePoke(ownerId, categoryId, pokemonMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created");
         }
     }
 }
