@@ -10,6 +10,7 @@ namespace reviewAppWebAPI.Interfaces
         ICollection<Owner> GetOwnersFromACountry(int countryId);
         bool CountryyExists(int id);
         bool CreateCountry(Country country);
+        bool UpdateCountry(Country country);
         bool Save();
     }
 }
