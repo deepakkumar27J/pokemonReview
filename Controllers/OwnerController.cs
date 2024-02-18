@@ -91,5 +91,29 @@ namespace reviewAppWebAPI.Controllers
 
             return Ok("Successfully created");
         }
+
+        [HttpPut("{ownerId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateCountry(int ownerId, [FromBody] OwnerDto ownerUpdate)
+        {
+            if (ownerUpdate == null)
+                return BadRequest(ModelState);
+            if (ownerId != ownerUpdate.Id)
+                return BadRequest(ModelState);
+            if (!_onwerRepository.OwnerExists(ownerId))
+                return NotFound();
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var ownerMap = _mapper.Map<Owner>(ownerUpdate);
+            if (!_onwerRepository.UpdateOwner(ownerMap))
+            {
+                ModelState.AddModelError("", "Something went wrong on updating owner");
+                return StatusCode(500, ModelState);
+            }
+            return NoContent();
+        }
     }
 }

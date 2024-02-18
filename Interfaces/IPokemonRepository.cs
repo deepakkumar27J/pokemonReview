@@ -10,6 +10,7 @@ namespace reviewAppWebAPI.Interfaces
         decimal GetPokemonRating(int pokeId);
         bool PokemonExists(int pokeId);
         bool CreatePoke(int ownerId, int categoryId, Pokemon pokemon);
+        bool UpdatePoke(int ownerId, int categoryId, Pokemon pokemon);
         bool Save();
     }
 }
