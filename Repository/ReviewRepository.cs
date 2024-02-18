@@ -47,5 +47,11 @@ namespace reviewAppWebAPI.Repository
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
         }
+
+        public bool UpgradeReview(Review review)
+        {
+            _context.Update(review);
+            return Save();
+        }
     }
 }

@@ -48,5 +48,11 @@ namespace reviewAppWebAPI.Repository
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
         }
+
+        public bool UpdateReviewer(Reviewer reviewer)
+        {
+            _context.Update(reviewer);
+            return Save();
+        }
     }
 }
