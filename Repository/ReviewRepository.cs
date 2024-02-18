@@ -18,7 +18,7 @@ namespace reviewAppWebAPI.Repository
 
         public bool CreateReview(Review review)
         {
-            _context.Add(owner);
+            _context.Add(review);
             return Save();
         }
 
