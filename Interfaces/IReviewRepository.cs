@@ -10,6 +10,8 @@ namespace reviewAppWebAPI.Interfaces
         bool ReviewExists(int reviewId);
         bool CreateReview(Review review);
         bool UpgradeReview(Review review);
+        bool DeleteReview(Review review);
+        bool DeleteReviews(List<Review> reviews);
         bool Save();
     }
 }
