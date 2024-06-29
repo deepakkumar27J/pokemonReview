@@ -272,3 +272,10 @@ F:\Learning\ASPNET\Web\PokemonReview\pokemonReview\obj\Debug\net8.0\reviewAppWeb
 F:\Learning\ASPNET\Web\PokemonReview\pokemonReview\obj\Debug\net8.0\reviewAppWebAPI.genruntimeconfig.cache
 F:\Learning\ASPNET\Web\PokemonReview\pokemonReview\obj\Debug\net8.0\ref\reviewAppWebAPI.dll
 F:\Learning\ASPNET\Web\PokemonReview\pokemonReview\bin\Debug\net8.0\AutoMapper.dll
+F:\Learning\ASPNET\Web\PokemonReview\pokemonReview\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+F:\Learning\ASPNET\Web\PokemonReview\pokemonReview\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+F:\Learning\ASPNET\Web\PokemonReview\pokemonReview\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+F:\Learning\ASPNET\Web\PokemonReview\pokemonReview\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+F:\Learning\ASPNET\Web\PokemonReview\pokemonReview\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
+F:\Learning\ASPNET\Web\PokemonReview\pokemonReview\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dll
+F:\Learning\ASPNET\Web\PokemonReview\pokemonReview\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
