@@ -20,6 +20,8 @@ namespace reviewAppWebAPI.Helper
             CreateMap<ReviewDto, Review>();
             CreateMap<Reviewer, ReviewerDto>();
             CreateMap<ReviewerDto, Reviewer>();
+            CreateMap<UserDto, User>();
+            CreateMap<User, UserDto>();
         }
     }
 }

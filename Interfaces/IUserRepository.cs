@@ -4,8 +4,8 @@ namespace reviewAppWebAPI.Interfaces
 {
     public interface IUserRepository
     {
-        Task<ApplicationUser> FindByEmailAsync(string email);
-        Task<bool> CreateAsync(ApplicationUser user, string password);
-        Task<bool> CheckPasswordAsync(ApplicationUser user, string password);
+        User FindByEmailAsync(string email);
+        bool CreateAsync(User user);
+        bool CheckPasswordAsync(User user, string password);
     }
 }
