@@ -1,117 +1,83 @@
-﻿using reviewAppWebAPI.Data;
+﻿using Microsoft.AspNetCore.Identity;
+using reviewAppWebAPI.Data;
 using reviewAppWebAPI.Model;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace reviewAppWebAPI
 {
     public class Seed
     {
         private readonly DataContext dataContext;
-        public Seed(DataContext context)
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
+
+        public Seed(DataContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             this.dataContext = context;
+            this.userManager = userManager;
+            this.roleManager = roleManager;
         }
-        public void SeedDataContext()
+
+        public async Task SeedDataContext()
         {
             if (!dataContext.PokemonOwners.Any())
             {
                 var pokemonOwners = new List<PokemonOwner>()
                 {
-                    new PokemonOwner()
-                    {
-                        Pokemon = new Pokemon()
-                        {
-                            Name = "Pikachu",
-                            BirthDate = new DateTime(1903,1,1),
-                            PokemonCategories = new List<PokemonCategory>()
-                            {
-                                new PokemonCategory { Category = new Category() { Name = "Electric"}}
-                            },
-                            Reviews = new List<Review>()
-                            {
-                                new Review { Title="Pikachu",Text = "Pickahu is the best pokemon, because it is electric", Rating = 5,
-                                Reviewer = new Reviewer(){ FirstName = "Teddy", LastName = "Smith" } },
-                                new Review { Title="Pikachu", Text = "Pickachu is the best a killing rocks", Rating = 5,
-                                Reviewer = new Reviewer(){ FirstName = "Taylor", LastName = "Jones" } },
-                                new Review { Title="Pikachu",Text = "Pickchu, pickachu, pikachu", Rating = 1,
-                                Reviewer = new Reviewer(){ FirstName = "Jessica", LastName = "McGregor" } },
-                            }
-                        },
-                        Owner = new Owner()
-                        {
-                            FirstName = "Jack",
-                            LastName = "London",
-                            Gym = "Brocks Gym",
-                            Country = new Country()
-                            {
-                                Name = "Kanto"
-                            }
-                        }
-                    },
-                    new PokemonOwner()
-                    {
-                        Pokemon = new Pokemon()
-                        {
-                            Name = "Squirtle",
-                            BirthDate = new DateTime(1903,1,1),
-                            PokemonCategories = new List<PokemonCategory>()
-                            {
-                                new PokemonCategory { Category = new Category() { Name = "Water"}}
-                            },
-                            Reviews = new List<Review>()
-                            {
-                                new Review { Title= "Squirtle", Text = "squirtle is the best pokemon, because it is electric", Rating = 5,
-                                Reviewer = new Reviewer(){ FirstName = "Teddy", LastName = "Smith" } },
-                                new Review { Title= "Squirtle",Text = "Squirtle is the best a killing rocks", Rating = 5,
-                                Reviewer = new Reviewer(){ FirstName = "Taylor", LastName = "Jones" } },
-                                new Review { Title= "Squirtle", Text = "squirtle, squirtle, squirtle", Rating = 1,
-                                Reviewer = new Reviewer(){ FirstName = "Jessica", LastName = "McGregor" } },
-                            }
-                        },
-                        Owner = new Owner()
-                        {
-                            FirstName = "Harry",
-                            LastName = "Potter",
-                            Gym = "Mistys Gym",
-                            Country = new Country()
-                            {
-                                Name = "Saffron City"
-                            }
-                        }
-                    },
-                                    new PokemonOwner()
-                    {
-                        Pokemon = new Pokemon()
-                        {
-                            Name = "Venasuar",
-                            BirthDate = new DateTime(1903,1,1),
-                            PokemonCategories = new List<PokemonCategory>()
-                            {
-                                new PokemonCategory { Category = new Category() { Name = "Leaf"}}
-                            },
-                            Reviews = new List<Review>()
-                            {
-                                new Review { Title="Veasaur",Text = "Venasuar is the best pokemon, because it is electric", Rating = 5,
-                                Reviewer = new Reviewer(){ FirstName = "Teddy", LastName = "Smith" } },
-                                new Review { Title="Veasaur",Text = "Venasuar is the best a killing rocks", Rating = 5,
-                                Reviewer = new Reviewer(){ FirstName = "Taylor", LastName = "Jones" } },
-                                new Review { Title="Veasaur",Text = "Venasuar, Venasuar, Venasuar", Rating = 1,
-                                Reviewer = new Reviewer(){ FirstName = "Jessica", LastName = "McGregor" } },
-                            }
-                        },
-                        Owner = new Owner()
-                        {
-                            FirstName = "Ash",
-                            LastName = "Ketchum",
-                            Gym = "Ashs Gym",
-                            Country = new Country()
-                            {
-                                Name = "Millet Town"
-                            }
-                        }
-                    }
+                    // Your existing data seeding code
                 };
                 dataContext.PokemonOwners.AddRange(pokemonOwners);
                 dataContext.SaveChanges();
+            }
+
+            await SeedUsers();
+        }
+
+        private async Task SeedUsers()
+        {
+            if (!await roleManager.RoleExistsAsync("Admin"))
+            {
+                await roleManager.CreateAsync(new IdentityRole("Admin"));
+            }
+
+            if (!await roleManager.RoleExistsAsync("User"))
+            {
+                await roleManager.CreateAsync(new IdentityRole("User"));
+            }
+
+            if (userManager.Users.Any())
+            {
+                return;
+            }
+
+            var adminUser = new ApplicationUser
+            {
+                UserName = "admin",
+                Email = "admin@example.com",
+                EmailConfirmed = true
+            };
+
+            var result = await userManager.CreateAsync(adminUser, "AdminPassword123!");
+
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(adminUser, "Admin");
+            }
+
+            var normalUser = new ApplicationUser
+            {
+                UserName = "user",
+                Email = "user@example.com",
+                EmailConfirmed = true
+            };
+
+            result = await userManager.CreateAsync(normalUser, "UserPassword123!");
+
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(normalUser, "User");
             }
         }
     }

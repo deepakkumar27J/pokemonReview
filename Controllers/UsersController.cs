@@ -10,6 +10,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using reviewAppWebAPI.Interfaces;
+using reviewAppWebAPI.Repository;
+using AutoMapper;
+AutoMapper;
 
 namespace reviewAppWebAPI.Controllers
 {
@@ -19,26 +22,40 @@ namespace reviewAppWebAPI.Controllers
     {
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;
 
-        public UsersController(IUserRepository userRepository, IConfiguration configuration)
+        public UsersController(IUserRepository userRepository, IConfiguration configuration, IMapper mapper)
         {
             _userRepository = userRepository;
             _configuration = configuration;
+            _mapper = mapper;
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDto model)
+        public async Task<IActionResult> Register([FromBody] UserDto model)
         {
+            Console.WriteLine("1");
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await _userRepository.CreateAsync(user, model.Password);
+                var userMap = _mapper.Map<User>(model);
+                if (_userRepository.CreateAsync(userMap))
+                {
+                    ModelState.AddModelError("", "Something went wrong while saving");
+                    return StatusCode(500, ModelState);
+                }
 
+                return Ok("Successfully created");
+
+                /*Console.WriteLine(ModelState);
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                Console.WriteLine("user--",user);
+                var result = await _userRepository.CreateAsync(user, model.Password);
+                Console.WriteLine("result--",result);
                 if (result)
                 {
                     return Ok(new { Message = "User registered successfully" });
                 }
-                return BadRequest("User registration failed");
+                return BadRequest("User registration failed");*/
             }
             return BadRequest(ModelState);
         }
